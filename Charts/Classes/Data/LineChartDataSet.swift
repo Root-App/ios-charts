@@ -37,6 +37,8 @@ public class LineChartDataSet: LineRadarChartDataSet
     
     public var drawCircleHoleEnabled = true
     
+    public var textEnabled = true
+    
     public required init()
     {
         super.init()

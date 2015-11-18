@@ -432,21 +432,24 @@ public class LineChartRenderer: LineScatterCandleRadarChartRenderer
                     from: minx,
                     to: maxx)
                 
-                for (var j = 0, count = positions.count; j < count; j++)
+                if dataSet.textEnabled
                 {
-                    if (!viewPortHandler.isInBoundsRight(positions[j].x))
+                    for (var j = 0, count = positions.count; j < count; j++)
                     {
-                        break
+                        if (!viewPortHandler.isInBoundsRight(positions[j].x))
+                        {
+                            break
+                        }
+                        
+                        if (!viewPortHandler.isInBoundsLeft(positions[j].x) || !viewPortHandler.isInBoundsY(positions[j].y))
+                        {
+                            continue
+                        }
+                        
+                        let val = entries[j + minx].value
+                        
+                        ChartUtils.drawText(context: context, text: formatter!.stringFromNumber(val)!, point: CGPoint(x: positions[j].x, y: positions[j].y - CGFloat(valOffset) - valueFont.lineHeight), align: .Center, attributes: [NSFontAttributeName: valueFont, NSForegroundColorAttributeName: valueTextColor])
                     }
-                    
-                    if (!viewPortHandler.isInBoundsLeft(positions[j].x) || !viewPortHandler.isInBoundsY(positions[j].y))
-                    {
-                        continue
-                    }
-                    
-                    let val = entries[j + minx].value
-                    
-                    ChartUtils.drawText(context: context, text: formatter!.stringFromNumber(val)!, point: CGPoint(x: positions[j].x, y: positions[j].y - CGFloat(valOffset) - valueFont.lineHeight), align: .Center, attributes: [NSFontAttributeName: valueFont, NSForegroundColorAttributeName: valueTextColor])
                 }
             }
         }
